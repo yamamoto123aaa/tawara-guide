@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>俵階段ゲームの遊び方</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap">
+<style>
+  /* Layout: a red festival band, then one tall column of numbered steps,
+     each a big picture with two or three lines of plain instruction. */
+  :root {
+    --bg: #fbf6e9;          /* rice paper */
+    --surface: #fffdf7;
+    --ink: #3f2f22;
+    --ink-soft: #6f5a47;
+    --line: #e7dbbd;
+    --beni: #b71c1c;        /* festival red */
+    --beni-ink: #ffffff;
+    --straw: #d9b068;       /* bale straw */
+    --straw-soft: #f4e6c2;
+    --lane1: #e53935;
+    --lane2: #43a047;
+    --slot: #f6efdc;
+    --font: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1d1712; --surface: #272019; --ink: #f3e9d6; --ink-soft: #c9b79c; --line: #43372a;
+      --beni: #d13a35; --beni-ink: #ffffff; --straw: #d9b068; --straw-soft: #3a2f22;
+      --lane1: #ef5350; --lane2: #66bb6a; --slot: #2c241b; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1d1712; --surface: #272019; --ink: #f3e9d6; --ink-soft: #c9b79c; --line: #43372a;
+    --beni: #d13a35; --beni-ink: #ffffff; --straw: #d9b068; --straw-soft: #3a2f22;
+    --lane1: #ef5350; --lane2: #66bb6a; --slot: #2c241b; color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--font); font-size: 16px; line-height: 1.75;
+  }
+  .wrap {
+    max-width: 760px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  h1, h2, h3 { text-wrap: balance; line-height: 1.35; margin: 0; }
+  p { margin: 0; }
+
+  /* ---- festival band ---- */
+  .band { background: var(--beni); color: var(--beni-ink); position: relative; margin-bottom: 40px; }
+  .band::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 10px;
+    background: repeating-linear-gradient(-45deg, #fff 0 9px, var(--beni) 9px 18px);
+  }
+  .band .wrap { padding-block: 34px 40px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; }
+  .band .eyebrow { font-size: 13px; letter-spacing: 0.22em; opacity: 0.9; }
+  .band h1 { font-size: clamp(30px, 7vw, 46px); font-weight: 900; margin: 4px 0 10px; }
+  .band .lead { font-size: 16px; max-width: 30em; }
+  .band img { width: clamp(110px, 26vw, 200px); height: auto; filter: drop-shadow(0 8px 10px rgba(0,0,0,.35)); }
+  @media (max-width: 520px) {
+    .band .wrap { grid-template-columns: 1fr; }
+    .band img { justify-self: center; order: -1; width: 150px; }
+  }
+
+  main { display: grid; gap: 56px; padding-bottom: 56px; }
+  /* Single-column grids get a track that never grows past the screen: with a
+     plain auto track, a wide picture (width: 100%) would size the column to its
+     own pixel width and push the text off the right edge. */
+  main, .steps, .step, .thing, .sounds, .sound, .notes { grid-template-columns: minmax(0, 1fr); }
+  img, audio, video { max-width: 100%; }
+  section > h2 {
+    font-size: clamp(22px, 5vw, 28px); font-weight: 900; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  section > h2::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--beni); flex: none; }
+  .intro { color: var(--ink-soft); margin-bottom: 18px; max-width: 36em; }
+
+  /* ---- pictures and photo slots ---- */
+  figure { margin: 0; }
+  .pic { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 16px; border: 1px solid var(--line); background: var(--surface); }
+  figcaption { font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+  .slot {
+    aspect-ratio: 4 / 3; max-width: 100%; border-radius: 16px; border: 2px dashed var(--straw);
+    background: var(--slot); display: grid; place-content: center; text-align: center; gap: 6px; padding: 16px;
+    color: var(--ink-soft);
+  }
+  .slot b { color: var(--ink); font-size: 15px; }
+  .slot small { font-size: 12px; letter-spacing: 0.08em; }
+  .slot.wide { aspect-ratio: 16 / 9; }
+
+  /* ---- what's at the venue ---- */
+  .things { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .thing { display: grid; gap: 8px; align-content: start; }
+  .thing h3 { font-size: 16px; font-weight: 900; }
+  .thing p { font-size: 14px; color: var(--ink-soft); }
+  @media (max-width: 520px) { .things { grid-template-columns: 1fr; } }
+
+  /* ---- steps: a real sequence, so they are numbered ---- */
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; counter-reset: step; }
+  .step { display: grid; gap: 12px; counter-increment: step; }
+  .step-head { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+  .step-head::before {
+    content: counter(step); width: 46px; height: 46px; border-radius: 50%;
+    background: var(--beni); color: var(--beni-ink); font-weight: 900; font-size: 22px;
+    display: grid; place-content: center;
+  }
+  .step h3 { font-size: clamp(19px, 4.4vw, 23px); font-weight: 900; }
+  .step p { max-width: 36em; }
+  .say {
+    display: inline-block; background: var(--straw-soft); border-radius: 10px; padding: 1px 10px;
+    font-weight: 700; color: var(--ink);
+  }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  @media (max-width: 520px) { .two { grid-template-columns: 1fr; } }
+
+  .lanes { display: flex; flex-wrap: wrap; gap: 8px 16px; font-weight: 700; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; vertical-align: -1px; margin-right: 6px; }
+  .dot.l1 { background: var(--lane1); } .dot.l2 { background: var(--lane2); }
+
+  /* shake meter on the phone */
+  .meter { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .meter div { border-radius: 10px; padding: 8px 4px; text-align: center; font-size: 13px; font-weight: 700; color: #2b2116; }
+  .m1 { background: #81c784; } .m2 { background: #fff176; } .m3 { background: #ffb74d; } .m4 { background: #e57373; }
+  @media (max-width: 400px) { .meter { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+  /* ---- score ---- */
+  .score { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; gap: 4px; }
+  .card .big { font-size: 22px; font-weight: 900; color: var(--beni); }
+  .axes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .axes span { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 14px; font-weight: 700; }
+  @media (max-width: 520px) { .score { grid-template-columns: 1fr; } }
+
+  .movie { margin-bottom: 28px; }
+  .pic.btn { max-height: 420px; width: auto; max-width: 100%; margin-inline: auto; }
+  .movie video { aspect-ratio: 720 / 450; background: #000; }
+  video.stage { aspect-ratio: 16 / 9; background: #000; }
+
+  /* ---- character ---- */
+  .chara-hero { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 20px; align-items: center;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 22px; }
+  .chara-pic { display: grid; justify-items: center; gap: 6px; }
+  .chara-pic .oni { width: min(220px, 100%); height: auto; filter: drop-shadow(0 8px 10px rgba(110, 70, 30, .18)); }
+  .bubble { position: relative; background: var(--beni); color: var(--beni-ink); font-weight: 900; font-size: 15px; line-height: 1.5;
+    border-radius: 16px; padding: 8px 14px; text-align: center; }
+  .bubble::after { content: ""; position: absolute; left: 50%; bottom: -9px; transform: translateX(-50%);
+    border: 9px solid transparent; border-bottom: 0; border-top-color: var(--beni); }
+  .kana { font-size: 13px; letter-spacing: .2em; color: var(--ink-soft); }
+  .chara-name { font-size: clamp(26px, 6vw, 34px); font-weight: 900; color: var(--beni); margin: 2px 0 8px; }
+  .chara-lead { margin-bottom: 12px; }
+  .profile { display: grid; gap: 6px; margin: 0; }
+  .profile div { display: grid; grid-template-columns: 8.5em minmax(0, 1fr); gap: 8px; border-top: 1px dashed var(--line); padding-top: 6px; }
+  .profile dt { font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+  .profile dd { margin: 0; font-weight: 700; }
+  .faces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .face { margin: 0; border-radius: 18px; padding: 12px 8px; text-align: center; display: grid; gap: 6px; justify-items: center; }
+  .face .oni { width: 100%; max-width: 120px; height: auto; }
+  .face figcaption { font-size: 13px; line-height: 1.5; color: #2b2116; }
+  .face figcaption b { display: block; font-size: 14px; }
+  .f1 { background: #c8e6c9; } .f2 { background: #fff59d; } .f3 { background: #ffcc80; } .f4 { background: #ef9a9a; }
+  @media (max-width: 560px) {
+    .chara-hero { grid-template-columns: 1fr; }
+    .faces { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  /* ---- sounds ---- */
+  .sounds { display: grid; gap: 10px; margin-bottom: 16px; }
+  .sound { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+  .sound-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .tag { background: var(--beni); color: var(--beni-ink); border-radius: 8px; padding: 0 10px; font-size: 13px; font-weight: 700; }
+  .sound audio { width: 100%; max-width: 100%; }
+  .why { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .why h3 { font-size: 16px; font-weight: 900; margin-bottom: 4px; }
+  .why p { font-size: 14px; color: var(--ink-soft); }
+  .card.todo { border: 2px dashed var(--straw); background: var(--slot); }
+  @media (max-width: 520px) { .why { grid-template-columns: 1fr; } }
+
+  /* ---- staff notes ---- */
+  .notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+  .notes li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+  .notes b { color: var(--beni); }
+
+  footer { color: var(--ink-soft); font-size: 13px; padding-block: 0 40px; }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+
+<header class="band">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">JAWS FESTA 秋田</div>
+      <h1>俵階段ゲームの遊び方</h1>
+      <p class="lead">スマホの入った米俵を、スタートからゴールまで運ぶゲームです。速く、そしてできるだけゆらさずに運ぶほど高得点。</p>
+    </div>
+    <img src="img/bale.webp" alt="米俵">
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>全体の流れ</h2>
+    <figure>
+      <img class="pic" src="img/overview.jpg" alt="全体の流れの図。スタートボタン、俵とスマホ、ストップボタン、会場の大画面の結果、自分のスマホで名前登録、ランキング" loading="lazy">
+      <figcaption>スタートからランキングにのるまで</figcaption>
+    </figure>
+  </section>
+
+  <section class="chara">
+    <h2>キャラクター紹介</h2>
+    <div class="chara-hero">
+      <div class="chara-pic">
+        <div class="bubble">しずかに運んで、<br>ぼくをずっと笑顔にしてね！</div>
+        <svg class="oni" viewBox="-6 -6 212 212" role="img" aria-label="米俵おにぎりくん"><path d="M85.7,28.6Q100.0,0.0 114.3,28.6L185.7,171.4Q200.0,200.0 168.0,200.0L32.0,200.0Q0.0,200.0 14.3,171.4Z" fill="#FFFBF0" stroke="#DDD2B0" stroke-width="4.0"/><path d="M65.5,100.9A9.0,9.0 0 0 1 82.5,100.9" fill="none" stroke="#000" stroke-width="3.6" stroke-linecap="round"/><path d="M117.5,100.9A9.0,9.0 0 0 1 134.5,100.9" fill="none" stroke="#000" stroke-width="3.6" stroke-linecap="round"/><circle cx="100.0" cy="126.0" r="9.0" fill="#D32F2F"/><path d="M115.0,153.5A16.0,16.0 0 0 1 85.0,153.5" fill="none" stroke="#000" stroke-width="4.8" stroke-linecap="round"/></svg>
+      </div>
+      <div class="chara-text">
+        <p class="kana">こめだわら おにぎりくん</p>
+        <h3 class="chara-name">米俵おにぎりくん</h3>
+        <p class="chara-lead">米どころ秋田の俵からやってきた、ちょっぴりこわがりなおにぎり。俵の中のスマホにすみついて、きみの運び方をじっと見ています。</p>
+        <dl class="profile">
+          <div><dt>すみか</dt><dd>俵の中のスマホ</dd></div>
+          <div><dt>とくい</dt><dd>ゆれを見張ること</dd></div>
+          <div><dt>チャームポイント</dt><dd>梅干しのおはな</dd></div>
+          <div><dt>にがて</dt><dd>ぐらぐらゆれること</dd></div>
+          <div><dt>ゴールの口ぐせ</dt><dd>「はこびきった！」</dd></div>
+        </dl>
+      </div>
+    </div>
+    <p class="intro" style="margin-top:18px">運んでいる間、ゆれに合わせて表情がくるくる変わります。ゴールまで笑顔のままでいられるかな？</p>
+    <div class="faces">
+      <figure class="face f1"><svg class="oni" viewBox="-6 -6 212 212" role="img" aria-label="米俵おにぎりくん"><path d="M85.7,28.6Q100.0,0.0 114.3,28.6L185.7,171.4Q200.0,200.0 168.0,200.0L32.0,200.0Q0.0,200.0 14.3,171.4Z" fill="#FFFBF0" stroke="#DDD2B0" stroke-width="4.0"/><path d="M65.5,100.9A9.0,9.0 0 0 1 82.5,100.9" fill="none" stroke="#000" stroke-width="3.6" stroke-linecap="round"/><path d="M117.5,100.9A9.0,9.0 0 0 1 134.5,100.9" fill="none" stroke="#000" stroke-width="3.6" stroke-linecap="round"/><circle cx="100.0" cy="126.0" r="9.0" fill="#D32F2F"/><path d="M115.0,153.5A16.0,16.0 0 0 1 85.0,153.5" fill="none" stroke="#000" stroke-width="4.8" stroke-linecap="round"/></svg><figcaption><b>静止</b>「ごきげん♪」</figcaption></figure>
+      <figure class="face f2"><svg class="oni" viewBox="-6 -6 212 212" role="img" aria-label="米俵おにぎりくん"><path d="M85.7,28.6Q100.0,0.0 114.3,28.6L185.7,171.4Q200.0,200.0 168.0,200.0L32.0,200.0Q0.0,200.0 14.3,171.4Z" fill="#FFFBF0" stroke="#DDD2B0" stroke-width="4.0"/><circle cx="74.0" cy="104.0" r="8.0" fill="#000"/><circle cx="71.6" cy="101.6" r="2.8" fill="#fff"/><circle cx="126.0" cy="104.0" r="8.0" fill="#000"/><circle cx="123.6" cy="101.6" r="2.8" fill="#fff"/><circle cx="100.0" cy="126.0" r="9.0" fill="#D32F2F"/><path d="M116.9,156.2A18.0,18.0 0 0 1 83.1,156.2" fill="none" stroke="#000" stroke-width="5.4" stroke-linecap="round"/></svg><figcaption><b>小さな揺れ</b>「おっと？」</figcaption></figure>
+      <figure class="face f3"><svg class="oni" viewBox="-6 -6 212 212" role="img" aria-label="米俵おにぎりくん"><path d="M85.7,28.6Q100.0,0.0 114.3,28.6L185.7,171.4Q200.0,200.0 168.0,200.0L32.0,200.0Q0.0,200.0 14.3,171.4Z" fill="#FFFBF0" stroke="#DDD2B0" stroke-width="4.0"/><circle cx="74.0" cy="104.0" r="10.0" fill="#000"/><circle cx="71.0" cy="101.0" r="3.5" fill="#fff"/><circle cx="126.0" cy="104.0" r="10.0" fill="#000"/><circle cx="123.0" cy="101.0" r="3.5" fill="#fff"/><circle cx="100.0" cy="126.0" r="9.0" fill="#D32F2F"/><ellipse cx="100.0" cy="156.0" rx="13.0" ry="7.0" fill="#7A2E2E"/><circle cx="66.2" cy="116.6" r="9.0" fill="#FF8A80" fill-opacity="0.4"/><circle cx="133.8" cy="116.6" r="9.0" fill="#FF8A80" fill-opacity="0.4"/></svg><figcaption><b>揺れてる</b>「ドキドキ…」</figcaption></figure>
+      <figure class="face f4"><svg class="oni" viewBox="-6 -6 212 212" role="img" aria-label="米俵おにぎりくん"><path d="M85.7,28.6Q100.0,0.0 114.3,28.6L185.7,171.4Q200.0,200.0 168.0,200.0L32.0,200.0Q0.0,200.0 14.3,171.4Z" fill="#FFFBF0" stroke="#DDD2B0" stroke-width="4.0"/><line x1="64.0" y1="94.0" x2="84.0" y2="114.0" stroke="#000" stroke-width="3.2" stroke-linecap="round"/><line x1="64.0" y1="114.0" x2="84.0" y2="94.0" stroke="#000" stroke-width="3.2" stroke-linecap="round"/><line x1="116.0" y1="94.0" x2="136.0" y2="114.0" stroke="#000" stroke-width="3.2" stroke-linecap="round"/><line x1="116.0" y1="114.0" x2="136.0" y2="94.0" stroke="#000" stroke-width="3.2" stroke-linecap="round"/><circle cx="100.0" cy="126.0" r="9.0" fill="#D32F2F"/><ellipse cx="100.0" cy="160.0" rx="16.0" ry="9.0" fill="#7A2E2E"/><circle cx="66.2" cy="118.0" r="10.0" fill="#FF8A80" fill-opacity="0.4"/><circle cx="133.8" cy="118.0" r="10.0" fill="#FF8A80" fill-opacity="0.4"/><path d="M156.0,23.0Q165.0,34.7 156.0,41.0Q147.0,34.7 156.0,23.0Z" fill="#64B5F6"/></svg><figcaption><b>大きな揺れ！</b>「わわわっ、<br>こぼれちゃう〜！」</figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>遊び方</h2>
+    <figure class="movie">
+      <video class="pic" controls playsinline preload="metadata" poster="video/phone-play-poster.jpg" src="video/phone-play.mp4"></video>
+      <figcaption>スマホの画面で見る1回の流れ（約16秒・音あり）。運んでいる途中は短くしています。</figcaption>
+    </figure>
+    <ol class="steps">
+      <li class="step">
+        <div class="step-head"><h3>俵を持ってスタートに立つ</h3></div>
+        <figure>
+          <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
+          <figcaption>スマホにこの画面が出ていれば準備OK</figcaption>
+        </figure>
+        <p>スマホに「ボタンを押してスタート！」と出ているのを確かめます。画面の左上の丸でレーンがわかります。</p>
+        <div class="lanes"><span><span class="dot l1"></span>赤＝レーン1</span><span><span class="dot l2"></span>緑＝レーン2</span></div>
+      </li>
+
+      <li class="step">
+        <div class="step-head"><h3>スタートボタンを押す</h3></div>
+        <figure>
+          <img class="pic btn" src="img/start-button.jpg" alt="白い箱に付いた緑の大きなスタートボタン" loading="lazy">
+          <figcaption>緑のスタートボタン。レーンごとに1つ（箱に号機が書いてあります）</figcaption>
+        </figure>
+        <p><span class="say">スタートです！</span> の声のあと、秋田音頭が流れて計測が始まります。</p>
+      </li>
+
+      <li class="step">
+        <div class="step-head"><h3>しずかに運ぶ</h3></div>
+        <figure>
+          <img class="pic" src="img/phone-run.jpg" alt="計測中の画面。「しずかに運ぼう！」とタイム、ゆれに合わせて動くおにぎり" loading="lazy">
+          <figcaption>運んでいる間の画面。タイムとゆれが見えます</figcaption>
+        </figure>
+        <p>画面のおにぎりの表情と色で、いまのゆれがわかります。緑のままを目指しましょう。</p>
+        <div class="meter" aria-label="ゆれの4段階">
+          <div class="m1">静止</div><div class="m2">小さな揺れ</div><div class="m3">揺れてる</div><div class="m4">大きな揺れ！</div>
+        </div>
+      </li>
+
+      <li class="step">
+        <div class="step-head"><h3>ゴールでストップボタンを押す</h3></div>
+        <div class="two">
+          <figure>
+            <img class="pic btn" src="img/stop-button.jpg" alt="赤い大きなストップボタン" loading="lazy">
+            <figcaption>赤のストップボタン。ゴールに1つ（2レーン共通）</figcaption>
+          </figure>
+          <figure>
+            <img class="pic" src="img/phone-result.jpg" alt="結果画面。「はこびきった！」とタイム、ゆれの値" loading="lazy">
+            <figcaption>スマホにはタイムとゆれが出ます</figcaption>
+          </figure>
+        </div>
+        <p><span class="say">ゴールです！ おつかれさまでした。</span> の声で終わりです。</p>
+      </li>
+
+      <li class="step">
+        <div class="step-head"><h3>大きな画面で結果を見る</h3></div>
+        <figure>
+          <video class="pic stage" controls playsinline muted preload="metadata" poster="video/stage-result-poster.jpg" src="video/stage-result.mp4"></video>
+          <figcaption>大画面の結果（約44秒・音なし）。「採点中…」のあと得点と順位が出て、次の画面でおにぎり先生のひとことが流れます。録画用に、実際の1回分のデータで再生しています。</figcaption>
+        </figure>
+        <p>得点と順位、「おにぎり先生」からのひとことが出ます。右下のQRコードは名前の登録用です。</p>
+      </li>
+
+      <li class="step">
+        <div class="step-head"><h3>QRコードで名前を登録する</h3></div>
+        <div class="two">
+          <figure>
+            <img class="pic" src="img/ranking.jpg" alt="スマホで見たランキングページ。表彰台と順位の一覧" loading="lazy">
+            <figcaption>自分のスマホで見るランキング</figcaption>
+          </figure>
+          <figure>
+            <img class="pic" src="img/stage-idle.jpg" alt="会場の大画面。ランキングと「ボタンを押してスタート！」" loading="lazy">
+            <figcaption>待っている間の大画面にもランキングが出ます</figcaption>
+          </figure>
+        </div>
+        <p>大画面のQRコードを自分のスマホで読み、名前を入れるとランキングにのります。名前を入れなければ、記録はランキングに出ません。</p>
+      </li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>音の演出</h2>
+    <p class="intro">スタートとゴールで声が流れ、運んでいる間は秋田音頭が流れます。▶ で聞けます。</p>
+    <div class="sounds">
+      <div class="sound">
+        <div class="sound-head"><span class="tag">スタート</span><b>「スタートです！」</b></div>
+        <audio controls preload="none" src="audio/voice-start.mp3"></audio>
+      </div>
+      <div class="sound">
+        <div class="sound-head"><span class="tag">ゴール</span><b>「ゴールです！ おつかれさまでした。」</b></div>
+        <audio controls preload="none" src="audio/voice-goal.mp3"></audio>
+      </div>
+      <div class="sound">
+        <div class="sound-head"><span class="tag">運んでいる間</span><b>秋田音頭（くり返し）</b></div>
+        <audio controls preload="none" src="audio/akita-ondo.mp3"></audio>
+      </div>
+    </div>
+
+    <div class="why">
+      <div class="card">
+        <h3>声にした理由</h3>
+        <p>俵を持っていると、スマホの画面はほとんど見られません。始まりと終わりを耳でわかるようにして、まわりで見ている人にも「いまスタートした」「ゴールした」が伝わるようにしました。</p>
+      </div>
+      <div class="card">
+        <h3>声の作り方</h3>
+        <p>AWS の音声合成サービス <b>Amazon Polly</b> の、自然に話す日本語の声で作りました。3種類の声と2通りの言い回しで6つの候補を作って聞き比べ、いちばん自然だった女性の声「Tomoko」を選びました。「スタート！」だけだと抑揚が不自然だったので「スタートです！」にし、「よーい」は外しています。</p>
+      </div>
+      <div class="card">
+        <h3>秋田音頭にした理由</h3>
+        <p>秋田のイベントなので、運んでいる間は地元の民謡でお祭りの雰囲気を出しています。スタートの声が終わってから流れ始め、声が聞き取れるよう少し小さめにし、ゴールで止まります。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>スタッフ向けのメモ</h2>
+    <ul class="notes">
+      <li><b>1レーンずつ</b> 片方のレーンが計測中のときは、もう片方のスタートボタンは効きません。スマホに「もう一方のレーンが計測中です」と出ます。</li>
+      <li><b>ストップは2秒後から</b> スタートしてすぐのストップは、押しまちがいとして無視されます。</li>
+      <li><b>結果は20秒</b> スマホの結果画面は20秒でスタート画面にもどります。次の人はそのままスタートボタンでOK。</li>
+      <li><b>スマホは充電しながら</b> 画面は点けたままになるので、充電しながら使ってください。</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="wrap">JAWS FESTA 秋田 &middot; 俵階段ゲーム</footer>
+
+</body>
+</html>
