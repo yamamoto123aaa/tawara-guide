@@ -71,7 +71,7 @@
   /* Single-column grids get a track that never grows past the screen: with a
      plain auto track, a wide picture (width: 100%) would size the column to its
      own pixel width and push the text off the right edge. */
-  main, .steps, .step, .thing, .sounds, .sound, .notes { grid-template-columns: minmax(0, 1fr); }
+  main, .steps, .step, .thing, .sounds, .sound { grid-template-columns: minmax(0, 1fr); }
   img, audio, video { max-width: 100%; }
   section > h2 {
     font-size: clamp(22px, 5vw, 28px); font-weight: 900; margin-bottom: 14px;
@@ -140,6 +140,46 @@
   .pic.btn { max-height: 420px; width: auto; max-width: 100%; margin-inline: auto; }
   .movie video { aspect-ratio: 720 / 450; background: #000; }
   video.stage { aspect-ratio: 16 / 9; background: #000; }
+  video.pic.tall { aspect-ratio: 9 / 16; width: min(100%, 360px); margin-inline: auto; background: #000; }
+  figure.movie.tall figcaption { text-align: center; }
+
+  /* ---- flow: one stage per row, joined by down arrows ---- */
+  .flow { list-style: none; margin: 0 0 28px; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; counter-reset: flow; }
+  .flow li { position: relative; counter-increment: flow; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 8px 12px; align-items: center; }
+  .flow li:not(:last-child)::after { content: ""; position: absolute; left: 50%; top: 100%; margin: 3px 0 0 -8px;
+    border: 8px solid transparent; border-bottom: 0; border-top: 10px solid var(--straw); }
+  .flow h3 { font-size: 17px; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+  .flow h3::before { content: counter(flow); flex: none; width: 28px; height: 28px; border-radius: 50%; background: var(--beni); color: var(--beni-ink); font-size: 15px; display: grid; place-content: center; }
+  .flow dl { margin: 0; display: grid; grid-template-columns: 5em minmax(0, 1fr); gap: 4px 8px; align-items: baseline; }
+  .flow dt { font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+  .flow dd { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 700; }
+  @media (max-width: 520px) { .flow li { grid-template-columns: minmax(0, 1fr); } }
+
+  /* ---- score: an equation of blocks, then the radar next to its legend ---- */
+  .equation { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: stretch; margin-bottom: 10px; }
+  .equation .op { align-self: center; font-size: 24px; font-weight: 900; color: var(--ink-soft); }
+  .term { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; display: grid; gap: 2px; align-content: center; }
+  .term b { font-size: 16px; font-weight: 900; }
+  .term span { font-size: 12px; line-height: 1.45; color: var(--ink-soft); }
+  .term.plus b { color: var(--beni); }
+  .total { background: var(--beni); color: var(--beni-ink); border-radius: 14px; padding: 8px 12px; text-align: center; font-weight: 900; margin-bottom: 8px; }
+  .example { font-size: 14px; color: var(--ink-soft); margin-bottom: 28px; }
+  .example b { color: var(--ink); }
+  @media (max-width: 560px) {
+    .equation { grid-template-columns: minmax(0, 1fr); }
+    .equation .op { justify-self: center; line-height: 1; }
+  }
+  .radar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; align-items: center; }
+  .radar svg { width: 100%; height: auto; display: block; }
+  .radar .grid { fill: none; stroke: var(--line); stroke-width: 1; }
+  .radar .shape { fill: var(--beni); fill-opacity: .28; stroke: var(--beni); stroke-width: 2; stroke-linejoin: round; }
+  .radar text { fill: var(--ink); font-family: var(--font); font-size: 13px; font-weight: 700; text-anchor: middle; }
+  .radar text.val { fill: var(--beni); font-size: 14px; font-weight: 900; }
+  .axis-list { margin: 0; display: grid; gap: 8px; }
+  .axis-list div { border-top: 1px dashed var(--line); padding-top: 6px; }
+  .axis-list dt { font-weight: 900; }
+  .axis-list dd { margin: 0; font-size: 14px; color: var(--ink-soft); line-height: 1.55; }
+  @media (max-width: 560px) { .radar { grid-template-columns: minmax(0, 1fr); } .radar svg { max-width: 320px; margin-inline: auto; } }
 
   /* ---- character ---- */
   .chara-hero { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 20px; align-items: center;
@@ -180,11 +220,6 @@
   .card.todo { border: 2px dashed var(--straw); background: var(--slot); }
   @media (max-width: 520px) { .why { grid-template-columns: 1fr; } }
 
-  /* ---- staff notes ---- */
-  .notes { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
-  .notes li { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
-  .notes b { color: var(--beni); }
-
   footer { color: var(--ink-soft); font-size: 13px; padding-block: 0 40px; }
   @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
 </style>
@@ -206,9 +241,20 @@
 
   <section>
     <h2>全体の流れ</h2>
+    <figure class="movie tall">
+      <video class="pic tall" controls playsinline preload="metadata" poster="video/full-play-poster.jpg" src="video/full-play.mp4"></video>
+      <figcaption>スタートから結果までの様子（約52秒・音あり）。段ボール箱を俵に見立てて撮影しました。大画面のQRコードは隠しています。</figcaption>
+    </figure>
+    <ol class="flow" aria-label="1回の流れ">
+      <li><h3>スタート</h3><dl><dt>すること</dt><dd>緑のボタンを押す</dd><dt>こうなる</dt><dd>「スタートです！」の声</dd></dl></li>
+      <li><h3>運ぶ</h3><dl><dt>すること</dt><dd>俵をしずかに運ぶ</dd><dt>こうなる</dt><dd>秋田の民謡風の曲が流れ、スマホがタイムとゆれを測る</dd></dl></li>
+      <li><h3>ゴール</h3><dl><dt>すること</dt><dd>赤のボタンを押す</dd><dt>こうなる</dt><dd>「ゴールです！」の声で計測終了</dd></dl></li>
+      <li><h3>結果</h3><dl><dt>すること</dt><dd>大画面を見る</dd><dt>こうなる</dt><dd>得点・順位・ひとことが出る</dd></dl></li>
+      <li><h3>登録</h3><dl><dt>すること</dt><dd>QRコードを読んで名前を入れる</dd><dt>こうなる</dt><dd>ランキングにのる</dd></dl></li>
+    </ol>
     <figure>
       <img class="pic" src="img/overview.jpg" alt="全体の流れの図。スタートボタン、俵とスマホ、ストップボタン、会場の大画面の結果、自分のスマホで名前登録、ランキング" loading="lazy">
-      <figcaption>スタートからランキングにのるまで</figcaption>
+      <figcaption>スタートからランキングにのるまでを、実際の写真と画面で見た図</figcaption>
     </figure>
   </section>
 
@@ -264,7 +310,7 @@
           <img class="pic btn" src="img/start-button.jpg" alt="白い箱に付いた緑の大きなスタートボタン" loading="lazy">
           <figcaption>緑のスタートボタン。レーンごとに1つ（箱に号機が書いてあります）</figcaption>
         </figure>
-        <p><span class="say">スタートです！</span> の声のあと、秋田音頭が流れて計測が始まります。</p>
+        <p><span class="say">スタートです！</span> の声のあと、秋田の民謡風の曲が流れて計測が始まります。</p>
       </li>
 
       <li class="step">
@@ -315,14 +361,51 @@
             <figcaption>待っている間の大画面にもランキングが出ます</figcaption>
           </figure>
         </div>
-        <p>大画面のQRコードを自分のスマホで読み、名前を入れるとランキングにのります。名前を入れなければ、記録はランキングに出ません。</p>
+        <p>大画面のQRコードを自分のスマホで読み、名前を入れるとランキングにのります。名前を入れなければ、記録はランキングに出ません。登録できるのは、遊んでから30分以内です。</p>
       </li>
     </ol>
   </section>
 
   <section>
+    <h2>得点のしくみ</h2>
+    <p class="intro">100点からタイムとゆれの分が引かれ、静かに運べた分のボーナスが足されます。</p>
+    <div class="equation" aria-label="100点 引く タイム 引く ゆれ 足す しずかボーナス">
+      <div class="term"><b>100点</b><span>持ち点</span></div>
+      <div class="op" aria-hidden="true">−</div>
+      <div class="term"><b>タイム</b><span>1秒につき1点</span></div>
+      <div class="op" aria-hidden="true">−</div>
+      <div class="term"><b>ゆれ</b><span>平均のゆれ1につき10点</span></div>
+      <div class="op" aria-hidden="true">+</div>
+      <div class="term plus"><b>しずかボーナス</b><span>静かだった時間の割合で最大3点</span></div>
+    </div>
+    <div class="total">＝ 総合得点（100点まで）</div>
+    <p class="example"><b>動画の回の例：</b>100 − 15.4（タイム）− 約6.8（ゆれ）＋ 1.297（ボーナス）＝ <b>79.070点</b></p>
+
+    <p class="intro">結果の画面には、運び方の5つの評価も出ます（0〜100）。得点には直接入らない、次の1回のための目安です。</p>
+    <div class="radar">
+      <svg viewBox="-14 16 288 200" role="img" aria-label="レーダーチャートの例。静かさ73、スピード81、なめらかさ87、持続力46、ぴたり度43">
+        <polygon class="grid" points="130,40 206.1,95.3 177,184.7 83,184.7 53.9,95.3"/>
+        <polygon class="grid" points="130,80 168,107.6 153.5,152.4 106.5,152.4 92,107.6"/>
+        <polygon class="shape" points="130,61.6 191.6,100 170.9,176.3 108.4,149.8 97.3,109.4"/>
+        <text x="130" y="30">静かさ <tspan class="val">73</tspan></text>
+        <text x="232" y="86">スピード</text><text class="val" x="232" y="102">81</text>
+        <text x="206" y="200">なめらかさ <tspan class="val">87</tspan></text>
+        <text x="60" y="200">持続力 <tspan class="val">46</tspan></text>
+        <text x="24" y="86">ぴたり度</text><text class="val" x="24" y="102">43</text>
+      </svg>
+      <dl class="axis-list">
+        <div><dt>静かさ</dt><dd>全体の平均のゆれが小さいほど高い</dd></div>
+        <div><dt>スピード</dt><dd>タイムが短いほど高い（8秒以内で100）</dd></div>
+        <div><dt>なめらかさ</dt><dd>ゆれの急な変化が少ないほど高い</dd></div>
+        <div><dt>持続力</dt><dd>最後の3分の1で静かだった時間の割合</dd></div>
+        <div><dt>ぴたり度</dt><dd>全体で静かだった時間の割合</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section>
     <h2>音の演出</h2>
-    <p class="intro">スタートとゴールで声が流れ、運んでいる間は秋田音頭が流れます。▶ で聞けます。</p>
+    <p class="intro">スタートとゴールで声が流れ、運んでいる間は秋田の民謡風の曲が流れます。▶ で聞けます。</p>
     <div class="sounds">
       <div class="sound">
         <div class="sound-head"><span class="tag">スタート</span><b>「スタートです！」</b></div>
@@ -333,7 +416,7 @@
         <audio controls preload="none" src="audio/voice-goal.mp3"></audio>
       </div>
       <div class="sound">
-        <div class="sound-head"><span class="tag">運んでいる間</span><b>秋田音頭（くり返し）</b></div>
+        <div class="sound-head"><span class="tag">運んでいる間</span><b>秋田の民謡風の曲（くり返し）</b></div>
         <audio controls preload="none" src="audio/akita-ondo.mp3"></audio>
       </div>
     </div>
@@ -348,20 +431,10 @@
         <p>AWS の音声合成サービス <b>Amazon Polly</b> の、自然に話す日本語の声で作りました。3種類の声と2通りの言い回しで6つの候補を作って聞き比べ、いちばん自然だった女性の声「Tomoko」を選びました。「スタート！」だけだと抑揚が不自然だったので「スタートです！」にし、「よーい」は外しています。</p>
       </div>
       <div class="card">
-        <h3>秋田音頭にした理由</h3>
-        <p>秋田のイベントなので、運んでいる間は地元の民謡でお祭りの雰囲気を出しています。スタートの声が終わってから流れ始め、声が聞き取れるよう少し小さめにし、ゴールで止まります。</p>
+        <h3>秋田の民謡風にした理由</h3>
+        <p>秋田のイベントなので、運んでいる間は秋田の民謡風の曲でお祭りの雰囲気を出しています。スタートの声が終わってから流れ始め、声が聞き取れるよう少し小さめにし、ゴールで止まります。</p>
       </div>
     </div>
-  </section>
-
-  <section>
-    <h2>スタッフ向けのメモ</h2>
-    <ul class="notes">
-      <li><b>1レーンずつ</b> 片方のレーンが計測中のときは、もう片方のスタートボタンは効きません。スマホに「もう一方のレーンが計測中です」と出ます。</li>
-      <li><b>ストップは2秒後から</b> スタートしてすぐのストップは、押しまちがいとして無視されます。</li>
-      <li><b>結果は20秒</b> スマホの結果画面は20秒でスタート画面にもどります。次の人はそのままスタートボタンでOK。</li>
-      <li><b>スマホは充電しながら</b> 画面は点けたままになるので、充電しながら使ってください。</li>
-    </ul>
   </section>
 
 </main>
