@@ -299,10 +299,16 @@
     <ol class="steps">
       <li class="step">
         <div class="step-head"><h3>俵を持ってスタートに立つ</h3></div>
-        <figure>
-          <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
-          <figcaption>スマホにこの画面が出ていれば準備OK</figcaption>
-        </figure>
+        <div class="two">
+          <figure>
+            <img class="pic" src="img/bale-photo.jpg" alt="縄でしばった緑色の米俵の写真" loading="lazy">
+            <figcaption>運ぶ米俵</figcaption>
+          </figure>
+          <figure>
+            <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
+            <figcaption>スマホにこの画面が出ていれば準備OK</figcaption>
+          </figure>
+        </div>
         <p>スマホに「ボタンを押してスタート！」と出ているのを確かめます。画面の左上の丸でレーンがわかります。</p>
         <div class="lanes"><span><span class="dot l1"></span>赤＝レーン1</span><span><span class="dot l2"></span>緑＝レーン2</span></div>
       </li>
@@ -439,6 +445,15 @@
         <p>秋田のイベントなので、運んでいる間は秋田の民謡風の曲でお祭りの雰囲気を出しています。スタートの声が終わってから流れ始め、声が聞き取れるよう少し小さめにし、ゴールで止まります。</p>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h2>システム構成</h2>
+    <p class="intro">ボタンを押してから大画面に結果が出るまで、AWS のサービスをこのように組み合わせています。</p>
+    <figure>
+      <a href="img/system-diagram.jpg"><img class="pic" src="img/system-diagram.jpg" alt="システム構成図。会場のボタンとスマホから AWS IoT Core に送られた信号や結果を Lambda が処理して DynamoDB に保存し、Amazon Bedrock でひとことを作り、大画面に通知する。参加者のスマホは API Gateway を通じて名前を登録する" loading="lazy"></a>
+      <figcaption>図を押すと大きく表示します。<a href="system-diagram.drawio" download>draw.io の元ファイル</a></figcaption>
+    </figure>
   </section>
 
 </main>
