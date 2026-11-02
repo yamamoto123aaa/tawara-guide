@@ -232,7 +232,7 @@
     <div>
       <div class="eyebrow">JAWS FESTA 秋田</div>
       <h1>俵階段ゲームの遊び方</h1>
-      <p class="lead">スマホの入った米俵を、スタートからゴールまで運ぶゲームです。速く、そしてできるだけゆらさずに運ぶほど高得点。</p>
+      <p class="lead">スマホをつけた米俵を、スタートからゴールまで運ぶゲームです。速く、そしてできるだけゆらさずに運ぶほど高得点。</p>
     </div>
     <img src="img/bale.webp" alt="米俵">
   </div>
@@ -244,6 +244,10 @@
 
   <section>
     <h2>全体の流れ</h2>
+    <figure class="movie">
+      <img class="pic" src="img/stairs.jpg" alt="米俵をかかえて階段をのぼる猫のイラスト。「そっと運んで、階段をのぼろう！」の文字と、スタートとストップのボタンを押す場面">
+      <figcaption>スタートのボタンを押し、米俵をそっと運んで階段をのぼり、ストップのボタンを押します</figcaption>
+    </figure>
     <figure class="movie tall">
       <video class="pic tall" controls playsinline preload="metadata" poster="video/full-play-poster.jpg" src="video/full-play.mp4"></video>
       <figcaption>スタートから結果までの様子（約52秒・音あり）。段ボール箱を俵に見立てて撮影しました。大画面のQRコードは隠しています。</figcaption>
@@ -271,9 +275,9 @@
       <div class="chara-text">
         <p class="kana">こめだわら おにぎりくん</p>
         <h3 class="chara-name">米俵おにぎりくん</h3>
-        <p class="chara-lead">米どころ秋田の俵からやってきた、ちょっぴりこわがりなおにぎり。俵の中のスマホにすみついて、きみの運び方をじっと見ています。</p>
+        <p class="chara-lead">米どころ秋田の俵からやってきた、ちょっぴりこわがりなおにぎり。俵につけたスマホにすみついて、きみの運び方をじっと見ています。</p>
         <dl class="profile">
-          <div><dt>すみか</dt><dd>俵の中のスマホ</dd></div>
+          <div><dt>すみか</dt><dd>俵につけたスマホ</dd></div>
           <div><dt>とくい</dt><dd>ゆれを見張ること</dd></div>
           <div><dt>チャームポイント</dt><dd>梅干しのおはな</dd></div>
           <div><dt>にがて</dt><dd>ぐらぐらゆれること</dd></div>
@@ -302,7 +306,7 @@
         <div class="two">
           <figure>
             <img class="pic" src="img/bale-photo.jpg" alt="縄でしばった緑色の米俵の写真" loading="lazy">
-            <figcaption>運ぶ米俵</figcaption>
+            <figcaption>運ぶ米俵。表面にスマホをつけて運びます</figcaption>
           </figure>
           <figure>
             <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
@@ -451,7 +455,7 @@
     <h2>システム構成</h2>
     <p class="intro">ボタンを押してから大画面に結果が出るまで、AWS のサービスをこのように組み合わせています。</p>
     <figure>
-      <a href="img/system-diagram.jpg"><img class="pic" src="img/system-diagram.jpg" alt="システム構成図。会場のボタンとスマホから AWS IoT Core に送られた信号や結果を Lambda が処理して DynamoDB に保存し、Amazon Bedrock でひとことを作り、大画面に通知する。参加者のスマホは API Gateway を通じて名前を登録する" loading="lazy"></a>
+      <a href="img/system-diagram.jpg"><img class="pic" src="img/system-diagram.jpg" alt="システム構成図。会場のボタンとスマホから AWS IoT Core に届いた信号と結果を、ルール経由で Lambda が処理して DynamoDB に保存する。DynamoDB Streams から2つの Lambda が動き、順位の集計と Amazon Bedrock によるひとことの生成を行い、IoT Core を通じて大画面に通知する。大画面と参加者のスマホは API Gateway 経由で Lambda を呼び、順位の取得と名前の登録を行う" loading="lazy"></a>
       <figcaption>図を押すと大きく表示します。<a href="system-diagram.drawio" download>draw.io の元ファイル</a></figcaption>
     </figure>
   </section>
