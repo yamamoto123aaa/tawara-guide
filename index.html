@@ -158,6 +158,7 @@
 
   /* ---- score: an equation of blocks, then the radar next to its legend ---- */
   .equation { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 8px; align-items: stretch; margin-bottom: 10px; }
+  .equation.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .equation .op { align-self: center; font-size: 24px; font-weight: 900; color: var(--ink-soft); }
   .term { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 8px; text-align: center; display: grid; gap: 2px; align-content: center; }
   .term b { font-size: 16px; font-weight: 900; }
@@ -167,7 +168,7 @@
   .example { font-size: 14px; color: var(--ink-soft); margin-bottom: 28px; }
   .example b { color: var(--ink); }
   @media (max-width: 560px) {
-    .equation { grid-template-columns: minmax(0, 1fr); }
+    .equation, .equation.three { grid-template-columns: minmax(0, 1fr); }
     .equation .op { justify-self: center; line-height: 1; }
   }
   .radar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 16px; align-items: center; }
@@ -232,7 +233,7 @@
     <div>
       <div class="eyebrow">JAWS FESTA 秋田</div>
       <h1>俵階段ゲームの遊び方</h1>
-      <p class="lead">スマホをつけた米俵を、スタートからゴールまで運ぶゲームです。速く、そしてできるだけゆらさずに運ぶほど高得点。</p>
+      <p class="lead">スマホをつけた米俵を、スタートからゴールまで運ぶゲームです。できるだけゆらさずに運ぶほど高得点です。急がなくて大丈夫です。</p>
     </div>
     <img src="img/bale.webp" alt="米俵">
   </div>
@@ -250,7 +251,7 @@
     </figure>
     <figure class="movie tall">
       <video class="pic tall" controls playsinline preload="metadata" poster="video/full-play-poster.jpg" src="video/full-play.mp4"></video>
-      <figcaption>スタートから結果までの様子（約52秒・音あり）。段ボール箱を俵に見立てて撮影しました。大画面のQRコードは隠しています。</figcaption>
+      <figcaption>スタートから結果までの様子（約52秒・音あり）。段ボール箱を俵に見立てて撮影しました。大画面のQRコードは隠しています。以前の採点方式のときの録画なので、得点は今の計算とは異なります。</figcaption>
     </figure>
     <ol class="flow" aria-label="1回の流れ">
       <li><h3>スタート</h3><dl><dt>すること</dt><dd>緑のボタンを押す</dd><dt>こうなる</dt><dd>「スタートです！」の声</dd></dl></li>
@@ -357,7 +358,7 @@
         <div class="step-head"><h3>大きな画面で結果を見る</h3></div>
         <figure>
           <video class="pic stage" controls playsinline muted preload="metadata" poster="video/stage-result-poster.jpg" src="video/stage-result.mp4"></video>
-          <figcaption>大画面の結果（約44秒・音なし）。「採点中…」のあと得点と順位が出て、次の画面でおにぎり先生のひとことが流れます。録画用に、実際の1回分のデータで再生しています。</figcaption>
+          <figcaption>大画面の結果（約44秒・音なし）。「採点中…」のあと得点と順位が出て、次の画面でおにぎり先生のひとことが流れます。録画用に、実際の1回分のデータで再生しています。以前の採点方式のときの録画なので、得点やレーダー図の項目は今と異なります。</figcaption>
         </figure>
         <p>得点と順位、「おにぎり先生」からのひとことが出ます。右下のQRコードは名前の登録用です。</p>
       </li>
@@ -381,35 +382,31 @@
 
   <section>
     <h2>得点のしくみ</h2>
-    <p class="notice" style="margin-bottom:14px">得点のしくみは、本番までに変更する予定です。ここに書いてあるのは今の内容です。</p>
-    <p class="intro">100点からタイムとゆれの分が引かれ、静かに運べた分のボーナスが足されます。</p>
-    <div class="equation" aria-label="100点 引く タイム 引く ゆれ 足す しずかボーナス">
-      <div class="term"><b>100点</b><span>持ち点</span></div>
-      <div class="op" aria-hidden="true">−</div>
-      <div class="term"><b>タイム</b><span>1秒につき1点</span></div>
-      <div class="op" aria-hidden="true">−</div>
-      <div class="term"><b>ゆれ</b><span>平均のゆれ1につき10点</span></div>
-      <div class="op" aria-hidden="true">+</div>
-      <div class="term plus"><b>しずかボーナス</b><span>静かだった時間の割合で最大3点</span></div>
+    <p class="notice" style="margin-bottom:14px">点数の細かい調整は、本番までに変更する予定です。ここに書いてあるのは今の内容です。</p>
+    <p class="intro">得点は、米俵がどれだけゆれたかだけで決まります。タイムは関係ないので、急がなくて大丈夫です。</p>
+    <div class="equation three" aria-label="小さなゆれは数えない。中くらいのゆれは少したまる。大きなゆれは一気にたまる">
+      <div class="term"><b>小さなゆれ</b><span>数えない</span></div>
+      <div class="term"><b>中くらいのゆれ</b><span>少したまる</span></div>
+      <div class="term plus"><b>大きなゆれ</b><span>一気にたまる</span></div>
     </div>
-    <div class="total">＝ 総合得点（100点まで）</div>
-    <p class="example"><b>動画の回の例：</b>100 − 15.4（タイム）− 約6.8（ゆれ）＋ 1.297（ボーナス）＝ <b>79.070点</b></p>
+    <div class="total">ゴールまでにたまったゆれが少ないほど高得点（最高100点）</div>
+    <p class="example">立ち止まっても、それまでにたまったゆれは減りません。十分そっと運べていれば、それ以上ゆっくりしても点は上がりません。<br><b>計算式：</b>100 ÷（1 ＋ たまったゆれ ÷ 50）</p>
 
     <p class="intro">結果の画面には、運び方の5つの評価も出ます（0〜100）。得点には直接入らない、次の1回のための目安です。</p>
     <div class="radar">
-      <svg viewBox="-14 16 288 200" role="img" aria-label="レーダーチャートの例。静かさ73、スピード81、なめらかさ87、持続力46、ぴたり度43">
+      <svg viewBox="-14 16 288 200" role="img" aria-label="レーダーチャートの例。静かさ73、おだやかさ80、なめらかさ87、持続力46、ぴたり度43">
         <polygon class="grid" points="130,40 206.1,95.3 177,184.7 83,184.7 53.9,95.3"/>
         <polygon class="grid" points="130,80 168,107.6 153.5,152.4 106.5,152.4 92,107.6"/>
         <polygon class="shape" points="130,61.6 191.6,100 170.9,176.3 108.4,149.8 97.3,109.4"/>
         <text x="130" y="30">静かさ <tspan class="val">73</tspan></text>
-        <text x="232" y="86">スピード</text><text class="val" x="232" y="102">81</text>
+        <text x="232" y="86">おだやかさ</text><text class="val" x="232" y="102">80</text>
         <text x="206" y="200">なめらかさ <tspan class="val">87</tspan></text>
         <text x="60" y="200">持続力 <tspan class="val">46</tspan></text>
         <text x="24" y="86">ぴたり度</text><text class="val" x="24" y="102">43</text>
       </svg>
       <dl class="axis-list">
         <div><dt>静かさ</dt><dd>全体の平均のゆれが小さいほど高い</dd></div>
-        <div><dt>スピード</dt><dd>タイムが短いほど高い（8秒以内で100）</dd></div>
+        <div><dt>おだやかさ</dt><dd>大きなゆれが少ないほど高い</dd></div>
         <div><dt>なめらかさ</dt><dd>ゆれの急な変化が少ないほど高い</dd></div>
         <div><dt>持続力</dt><dd>最後の3分の1で静かだった時間の割合</dd></div>
         <div><dt>ぴたり度</dt><dd>全体で静かだった時間の割合</dd></div>
