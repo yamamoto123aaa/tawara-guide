@@ -222,6 +222,27 @@
   .card.todo { border: 2px dashed var(--straw); background: var(--slot); }
   @media (max-width: 520px) { .why { grid-template-columns: 1fr; } }
 
+  /* ---- wide screens: use the width instead of one long narrow column ---- */
+  @media (min-width: 1080px) {
+    .wrap { max-width: 1120px; }
+    .media-pair { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+    .movie:has(> video:not(.tall)) { text-align: center; }
+    .movie > video:not(.tall) { max-width: 760px; margin-inline: auto; }
+    .flow { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .flow li { grid-template-columns: minmax(0, 1fr); align-content: start; }
+    .flow li:not(:last-child)::after { left: 100%; top: 50%; margin: -8px 0 0 3px;
+      border: 8px solid transparent; border-right: 0; border-left: 10px solid var(--straw); }
+    .flow dl { grid-template-columns: minmax(0, 1fr); }
+    .flow dd + dt { margin-top: 6px; }
+    .step { grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); column-gap: 32px; grid-auto-rows: min-content; }
+    .step > * { grid-column: 1; }
+    .step > figure, .step > .two { grid-column: 2; grid-row: 1 / span 6; }
+    .sounds { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+    .why { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .band .lead, .intro { max-width: none; }
+    .radar { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 40px; }
+  }
+
   footer { color: var(--ink-soft); font-size: 13px; padding-block: 0 40px; }
   @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
 </style>
@@ -245,6 +266,7 @@
 
   <section>
     <h2>全体の流れ</h2>
+    <div class="media-pair">
     <figure class="movie">
       <img class="pic" src="img/stairs.jpg" alt="米俵をかかえて階段をのぼる猫のイラスト。「そっと運んで、階段をのぼろう！」の文字と、スタートとストップのボタンを押す場面">
       <figcaption>スタートのボタンを押し、米俵をそっと運んで階段をのぼり、ストップのボタンを押します</figcaption>
@@ -253,6 +275,7 @@
       <video class="pic tall" controls playsinline preload="metadata" poster="video/full-play-poster.jpg" src="video/full-play.mp4"></video>
       <figcaption>スタートから結果までの様子（約52秒・音あり）。段ボール箱を俵に見立てて撮影しました。大画面のQRコードは隠しています。以前の採点方式のときの録画なので、得点は今の計算とは異なります。</figcaption>
     </figure>
+    </div>
     <ol class="flow" aria-label="1回の流れ">
       <li><h3>スタート</h3><dl><dt>すること</dt><dd>緑のボタンを押す</dd><dt>こうなる</dt><dd>「スタートです！」の声</dd></dl></li>
       <li><h3>運ぶ</h3><dl><dt>すること</dt><dd>俵をしずかに運ぶ</dd><dt>こうなる</dt><dd>秋田の民謡風の曲が流れ、スマホがタイムとゆれを測る</dd></dl></li>
