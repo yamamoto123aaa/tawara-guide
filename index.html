@@ -61,7 +61,7 @@
   .band .eyebrow { font-size: 13px; letter-spacing: 0.22em; opacity: 0.9; }
   .band h1 { font-size: clamp(30px, 7vw, 46px); font-weight: 900; margin: 4px 0 10px; }
   .band .lead { font-size: 16px; max-width: 30em; }
-  .band img { width: clamp(110px, 26vw, 200px); height: auto; filter: drop-shadow(0 8px 10px rgba(0,0,0,.35)); }
+  .band img { width: clamp(110px, 26vw, 200px); height: auto; border-radius: 12px; filter: drop-shadow(0 8px 10px rgba(0,0,0,.35)); }
   @media (max-width: 520px) {
     .band .wrap { grid-template-columns: 1fr; }
     .band img { justify-self: center; order: -1; width: 150px; }
@@ -222,6 +222,12 @@
   .card.todo { border: 2px dashed var(--straw); background: var(--slot); }
   @media (max-width: 520px) { .why { grid-template-columns: 1fr; } }
 
+  /* ---- the bale and how to treat it ---- */
+  .bale-intro { display: grid; gap: 16px; }
+  .caution { background: var(--straw-soft); border-left: 6px solid var(--beni); border-radius: 10px; padding: 12px 16px; }
+  .caution h3 { font-size: 17px; font-weight: 900; color: var(--beni); margin-bottom: 6px; }
+  .caution ul { margin: 0; padding-left: 1.3em; display: grid; gap: 6px; font-size: 17px; font-weight: 700; line-height: 1.6; }
+
   /* ---- wide screens: use the width instead of one long narrow column ---- */
   @media (min-width: 1080px) {
     .wrap { max-width: 1120px; }
@@ -241,6 +247,7 @@
     .why { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .band .lead, .intro { max-width: none; }
     .radar { grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 40px; }
+    .bale-intro { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; align-items: center; }
   }
 
   footer { color: var(--ink-soft); font-size: 13px; padding-block: 0 40px; }
@@ -256,13 +263,33 @@
       <h1>俵階段ゲームの遊び方</h1>
       <p class="lead">スマホをつけた米俵を、スタートからゴールまで運ぶゲームです。できるだけゆらさずに運ぶほど高得点です。急がなくて大丈夫です。</p>
     </div>
-    <img src="img/bale.webp" alt="米俵">
+    <img src="img/bale-festa.jpg" alt="JAWS FESTA 2026 in AKITA のラベルを貼った、大小2つの米俵">
   </div>
 </header>
 
 <main class="wrap">
 
   <p class="notice">このページの内容は、本番に向けて更新が入ります。</p>
+
+  <section>
+    <h2>運ぶ米俵</h2>
+    <div class="bale-intro">
+      <figure>
+        <img class="pic" src="img/bale-festa.jpg" alt="縄でしばった緑色の米俵が大小2つ。どちらにも JAWS FESTA 2026 in AKITA のラベルと「担いでわっしょい 実りに感謝 豊作祈願」の文字">
+        <figcaption>写真は大小2つの米俵。ラベルの言葉は「担いでわっしょい 実りに感謝 豊作祈願」</figcaption>
+      </figure>
+      <div>
+        <p class="intro">このゲームで運ぶ米俵です。表面にスマホをつけて運びます。</p>
+        <aside class="caution" aria-label="遊ぶときのお願い">
+          <h3>遊ぶときのお願い</h3>
+          <ul>
+            <li>ボタンはやさしく押してください</li>
+            <li>米俵は下から担いで（抱えて）運んでください</li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
 
   <section>
     <h2>全体の流れ</h2>
@@ -277,9 +304,9 @@
     </figure>
     </div>
     <ol class="flow" aria-label="1回の流れ">
-      <li><h3>スタート</h3><dl><dt>すること</dt><dd>緑のボタンを押す</dd><dt>こうなる</dt><dd>「スタートです！」の声</dd></dl></li>
-      <li><h3>運ぶ</h3><dl><dt>すること</dt><dd>俵をしずかに運ぶ</dd><dt>こうなる</dt><dd>秋田の民謡風の曲が流れ、スマホがタイムとゆれを測る</dd></dl></li>
-      <li><h3>ゴール</h3><dl><dt>すること</dt><dd>赤のボタンを押す</dd><dt>こうなる</dt><dd>「ゴールです！」の声で計測終了</dd></dl></li>
+      <li><h3>スタート</h3><dl><dt>すること</dt><dd>緑のボタンをやさしく押す</dd><dt>こうなる</dt><dd>「スタートです！」の声</dd></dl></li>
+      <li><h3>運ぶ</h3><dl><dt>すること</dt><dd>俵を下から担いで（抱えて）しずかに運ぶ</dd><dt>こうなる</dt><dd>秋田の民謡風の曲が流れ、スマホがタイムとゆれを測る</dd></dl></li>
+      <li><h3>ゴール</h3><dl><dt>すること</dt><dd>赤のボタンをやさしく押す</dd><dt>こうなる</dt><dd>「ゴールです！」の声で計測終了</dd></dl></li>
       <li><h3>結果</h3><dl><dt>すること</dt><dd>大画面を見る</dd><dt>こうなる</dt><dd>得点・順位・ひとことが出る</dd></dl></li>
       <li><h3>登録</h3><dl><dt>すること</dt><dd>QRコードを読んで名前を入れる</dd><dt>こうなる</dt><dd>ランキングにのる</dd></dl></li>
     </ol>
@@ -327,17 +354,11 @@
     <ol class="steps">
       <li class="step">
         <div class="step-head"><h3>俵を持ってスタートに立つ</h3></div>
-        <div class="two">
-          <figure>
-            <img class="pic" src="img/bale-photo.jpg" alt="縄でしばった緑色の米俵の写真" loading="lazy">
-            <figcaption>運ぶ米俵。表面にスマホをつけて運びます</figcaption>
-          </figure>
-          <figure>
-            <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
-            <figcaption>スマホにこの画面が出ていれば準備OK</figcaption>
-          </figure>
-        </div>
-        <p>スマホに「ボタンを押してスタート！」と出ているのを確かめます。画面の左上の丸でレーンがわかります。</p>
+        <figure>
+          <img class="pic" src="img/phone-wait.jpg" alt="スマホの待機画面。おにぎりのキャラクターと「ボタンを押してスタート！」の文字" loading="lazy">
+          <figcaption>スマホにこの画面が出ていれば準備OK</figcaption>
+        </figure>
+        <p>米俵は下から担いで（抱えて）持ちます。スマホに「ボタンを押してスタート！」と出ているのを確かめます。画面の左上の丸でレーンがわかります。</p>
         <div class="lanes"><span><span class="dot l1"></span>赤＝レーン1</span><span><span class="dot l2"></span>緑＝レーン2</span></div>
       </li>
 
@@ -347,7 +368,7 @@
           <img class="pic btn" src="img/start-button.jpg" alt="白い箱に付いた緑の大きなスタートボタン" loading="lazy">
           <figcaption>緑のスタートボタン。レーンごとに1つ（箱に号機が書いてあります）</figcaption>
         </figure>
-        <p><span class="say">スタートです！</span> の声のあと、秋田の民謡風の曲が流れて計測が始まります。</p>
+        <p>ボタンはやさしく押してください。<span class="say">スタートです！</span> の声のあと、秋田の民謡風の曲が流れて計測が始まります。</p>
       </li>
 
       <li class="step">
@@ -374,7 +395,7 @@
             <figcaption>スマホにはタイムとゆれが出ます</figcaption>
           </figure>
         </div>
-        <p><span class="say">ゴールです！ おつかれさまでした。</span> の声で終わりです。</p>
+        <p>ボタンはやさしく押してください。<span class="say">ゴールです！ おつかれさまでした。</span> の声で終わりです。</p>
       </li>
 
       <li class="step">
