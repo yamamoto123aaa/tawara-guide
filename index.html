@@ -311,7 +311,7 @@
       <li><h3>登録</h3><dl><dt>すること</dt><dd>QRコードを読んで名前を入れる</dd><dt>こうなる</dt><dd>ランキングにのる</dd></dl></li>
     </ol>
     <figure>
-      <img class="pic" src="img/overview.jpg" alt="全体の流れの図。スタートボタン、俵とスマホ、ストップボタン、会場の大画面の結果、自分のスマホで名前登録、ランキング" loading="lazy">
+      <img class="pic" src="img/overview.jpg?v=20261105" alt="全体の流れの図。スタートボタン、俵とスマホ、ストップボタン、会場の大画面の結果、自分のスマホで名前登録、ランキング" loading="lazy">
       <figcaption>スタートからランキングにのるまでを、実際の写真と画面で見た図</figcaption>
     </figure>
   </section>
@@ -496,7 +496,7 @@
     <h2>システム構成</h2>
     <p class="intro">ボタンを押してから大画面に結果が出るまで、AWS のサービスをこのように組み合わせています。</p>
     <figure>
-      <a href="img/system-diagram.jpg"><img class="pic" src="img/system-diagram.jpg" alt="システム構成図。会場のボタンとスマホから AWS IoT Core に届いた信号と結果を、ルール経由で Lambda が処理して DynamoDB に保存する。DynamoDB Streams から2つの Lambda が動き、順位の集計と Amazon Bedrock によるひとことの生成を行い、IoT Core を通じて大画面に変更を通知する。大画面は API Gateway 経由で結果と順位を取得し、参加者のスマホは API Gateway 経由で順位の取得と名前の登録を行う" loading="lazy"></a>
+      <a href="img/system-diagram.jpg?v=20261105"><img class="pic" src="img/system-diagram.jpg?v=20261105" alt="システム構成図。会場のボタンとスマホから AWS IoT Core に届いた信号と結果を、ルール経由で Lambda が処理して DynamoDB に保存する。DynamoDB Streams から2つの Lambda が動き、順位の集計と Amazon Bedrock によるひとことの生成を行い、IoT Core を通じて大画面に変更を通知する。大画面は API Gateway 経由で結果と順位を取得し、参加者のスマホは API Gateway 経由で順位の取得と名前の登録を行う" loading="lazy"></a>
       <figcaption>図を押すと大きく表示します。</figcaption>
     </figure>
   </section>
