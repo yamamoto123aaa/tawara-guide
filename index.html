@@ -69,6 +69,10 @@
 
   main { display: grid; gap: 56px; padding-bottom: 56px; }
   .notice { background: var(--straw-soft); border-left: 6px solid var(--straw); border-radius: 10px; padding: 10px 14px; font-weight: 700; }
+  .rank-link { margin: 14px 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .rank-link a { background: var(--beni); color: var(--beni-ink); font-weight: 900; text-decoration: none; border-radius: 999px; padding: 10px 24px; }
+  .rank-link a:hover, .rank-link a:focus-visible { filter: brightness(1.1); }
+  .rank-link .url { color: var(--ink-soft); font-size: 14px; word-break: break-all; }
   /* Single-column grids get a track that never grows past the screen: with a
      plain auto track, a wide picture (width: 100%) would size the column to its
      own pixel width and push the text off the right edge. */
@@ -270,6 +274,7 @@
 <main class="wrap">
 
   <p class="notice">このページの内容は、本番に向けて更新が入ります。</p>
+  <p class="rank-link"><a href="https://d1v6psugarb6pt.cloudfront.net" target="_blank" rel="noopener">ランキングを見る</a><span class="url">d1v6psugarb6pt.cloudfront.net</span></p>
 
   <section>
     <h2>運ぶ米俵</h2>
@@ -420,6 +425,7 @@
           </figure>
         </div>
         <p>大画面のQRコードを自分のスマホで読み、名前を入れるとランキングにのります。名前を入れなければ、記録はランキングに出ません。登録できるのは、遊んでから30分以内です。</p>
+        <p class="rank-link"><a href="https://d1v6psugarb6pt.cloudfront.net" target="_blank" rel="noopener">ランキングを見る</a><span class="url">d1v6psugarb6pt.cloudfront.net</span></p>
       </li>
     </ol>
   </section>
